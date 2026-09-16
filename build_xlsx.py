@@ -74,9 +74,14 @@ def main():
 
     # highlight confirmed groups
     hot_fill = PatternFill("solid", fgColor="FFF2CC")
+    ref_fill = PatternFill("solid", fgColor="D9D9D9")
     for row in range(2, n + 1):
         status = str(ws.cell(row=row, column=7).value)
-        if any(k in status for k in ("已成團", "保證出團")):
+        if "僅供價格參考" in status:
+            for col in range(1, len(headers) + 1):
+                ws.cell(row=row, column=col).fill = ref_fill
+            ws.cell(row=row, column=7).font = Font(bold=True, color="595959")
+        elif any(k in status for k in ("已成團", "保證出團")):
             ws.cell(row=row, column=7).fill = hot_fill
             ws.cell(row=row, column=7).font = Font(bold=True, color="7F6000")
 
@@ -93,7 +98,7 @@ def main():
         "資料來源：鳳凰旅遊、喜鴻假期、五福旅遊、雄獅旅遊、品冠旅遊、山富旅遊、可樂旅遊、理想旅遊 官網",
         "查詢時間：2026-09-16（團況與機位為查詢當下即時狀態，會變動）",
         "團費皆為每人「起」價，多以雙人一室計價；單人房差各官網多未標示，需直接洽詢旅行社",
-        "黃色標示 = 已成團／保證出團",
+        "黃色標示 = 已成團／保證出團；灰色標示 = 使用者 9/14 取消的喜鴻「風華峴港5日」訂單，僅供價格參考（訂單總額 NT$44,541，未付訂金）",
         "9/25-9/28 為中秋連假，10/9-10/11 為雙十連假，連假團價較高且名額有限",
         "純研究，未報名、未付款、未填寫任何個人資料",
     ]
